@@ -18,7 +18,7 @@ def build(c, docs=False):
     # 'coverage run -m pytest' esegue i test tracciando quali linee di codice sono state eseguite
     c.run('poetry run coverage run -m pytest contentscanner tests')
     
-    # Crea il pacchetto distribuibile (wheel e tar.gz) usando Poetry
+    # Crea il pacchetto distribuibile (wheel e tar.gz) usando Poetry 
     c.run('poetry build')
     
     # Verifica la presenza del file wordlist.txt
