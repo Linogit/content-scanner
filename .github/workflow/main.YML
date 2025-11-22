@@ -8,7 +8,7 @@ on: [push]
 jobs:
   # Job principale di build e test
   build:
-    # Esegui su un runner Ubuntu ultima versione
+    # Esegui su un runner Ubuntu ultima versione 
     runs-on: ubuntu-latest
     
     # Strategia della matrice: permette di eseguire il job su più configurazioni
