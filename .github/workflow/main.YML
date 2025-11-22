@@ -1,0 +1,57 @@
+# Nome del workflow
+name: Python package
+
+# Trigger del workflow - si attiva su ogni push
+on: [push]
+
+# Definizione dei job (lavori) della pipeline
+jobs:
+  # Job principale di build e test
+  build:
+    # Esegui su un runner Ubuntu ultima versione
+    runs-on: ubuntu-latest
+    
+    # Strategia della matrice: permette di eseguire il job su più configurazioni
+    strategy:
+      matrix:
+        # Definisce le versioni di Python da testare
+        # In questo caso solo Python 3.11
+        python-version: ["3.11"]
+    
+    # Sequenza di step per il job
+    steps:
+      # Step 1: Checkout del codice - scarica il repository
+      - uses: actions/checkout@v3
+
+      # Step 2: Setup dell'ambiente Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          # Usa la versione di Python definita nella matrice
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Installazione delle dipendenze
+      - name: Install dependencies
+        run: |
+          # Aggiorna pip all'ultima versione
+          python -m pip install --upgrade pip
+          # Installa Poetry per la gestione delle dipendenze
+          pip install poetry
+          # Installa tutte le dipendenze del progetto (incluse dev-dependencies)
+          poetry install 
+
+      # Step 4: Analisi del codice con Linter
+      - name: Lint with pycodestyle/pep527
+        run: |
+          # Esegue pycodestyle (controllo stile codice PEP 8)
+          # su tutte le cartelle specificate
+          poetry run pycodestyle contentscanner tests
+
+      # Step 5: Esecuzione dei test con coverage
+      - name: Test cases with pytest
+        run: |
+          # Esegue i test con pytest e misura la copertura del codice
+          # coverage run: avvia la misurazione della copertura
+          # -m pytest: esegue pytest come modulo
+          # contentscanner tests: cartelle dove cercare i test
+          poetry run coverage run -m pytest contentscanner tests
