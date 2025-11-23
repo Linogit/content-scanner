@@ -7,7 +7,7 @@ import os
 # Definisce un task Invoke chiamato 'build'
 @task
 def build(c, docs=False):
-    # Esegue 'poetry install' per installare tutte le dipendenze del progetto   
+    # Esegue 'poetry install' per installare tutte le dipendenze del progetto  
     c.run('poetry install')
     
     # Esegue il linter pycodestyle sulle cartelle contentscanner e tests
